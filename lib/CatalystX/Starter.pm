@@ -18,7 +18,8 @@ sub _module2dist {
 
 sub _make_destination {
     my $module = shift;
-    
+    my $dist = _module2dist($module);
+    mkdir $dist or die "Failed to create dist directory '$dist': $!";
 }
 
 

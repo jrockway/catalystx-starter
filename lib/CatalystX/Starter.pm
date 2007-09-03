@@ -53,6 +53,11 @@ sub _fix_files {
     return;
 }
 
+sub _split_module {
+    my $module = shift;
+    return split /::/, $module;
+}
+
 1;
 
 __END__

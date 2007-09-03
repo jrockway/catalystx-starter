@@ -6,6 +6,8 @@ use warnings;
 
 use File::ShareDir 'dist_dir';
 use File::Copy::Recursive qw/dircopy/;
+use File::Slurp qw(read_file write_file);
+use File::pushd;
 
 # don't use any of these subroutines.
 
@@ -23,6 +25,32 @@ sub _copy_files {
     my $dest = shift;
     my $src  = _boilerplate();
     dircopy($src, $dest) or die "Failed to install boilerplate: $!";
+}
+
+sub _fix_files {
+    my ($module, $dir) = @_;
+    
+    opendir my $dh, $dir or die "Failed to opendir $dir: $!";
+    my @paths = grep {!/^[.][.]?$/} readdir $dh 
+      or die "Failed to read $dir: $!";
+    
+    my $p = pushd $dir;
+    my @dirs  = grep { -d  } @paths;
+    my @files = grep { !-d } @paths;
+
+    # fix files
+    foreach my $file (@files) {
+        my $data = read_file($file);
+        chmod 0644, $file;
+        $data =~ s/\[% __YOUR_MODULE__ %\]/$module/g;
+        write_file($file, $data);
+    }
+    
+    # fix subdirs
+    _fix_files($module, $_) for @dirs;
+    closedir $dh;
+    
+    return;
 }
 
 1;

@@ -1,0 +1,33 @@
+#!/usr/bin/env perl
+# Copyright (c) 2007 Jonathan Rockway <jrockway@cpan.org>
+
+use strict;
+use warnings;
+use Test::More tests => 8;
+
+use CatalystX::Starter;
+use Directory::Scratch;
+use Test::Exception;
+use File::Slurp qw/read_file/;
+
+my $src = CatalystX::Starter::_boilerplate();
+ok -e $src, "source of files, $src, exists";
+my $tmp = Directory::Scratch->new;
+my $dest = $tmp->mkdir('My-Module');
+CatalystX::Starter::_copy_files($dest);
+ok scalar $tmp->ls('My-Module') > 10, 'copied some files';
+
+my ($mk) = grep { /Makefile.PL/ } $tmp->ls('My-Module');
+ok $tmp->exists($mk), 'Makefile.PL exists';
+
+my $mkfile = $tmp->read($mk);
+unlike $mkfile, qr/My::Module/, 'no My::Module yet';
+like $mkfile, qr/\[% __YOUR_MODULE__ %\]/, 'makefile has placeholder';
+
+lives_ok {
+    CatalystX::Starter::_fix_files('My::Module', $tmp->exists('My-Module'));
+} 'files fixed without dying';
+
+$mkfile = $tmp->read($mk);
+like $mkfile, qr/My::Module/, 'My::Module is in there';
+unlike $mkfile, qr/\[% __YOUR_MODULE__ %\]/, 'makefile has no placeholders';

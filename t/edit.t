@@ -8,7 +8,6 @@ use Test::More tests => 8;
 use CatalystX::Starter;
 use Directory::Scratch;
 use Test::Exception;
-use File::Slurp qw/read_file/;
 
 my $src = CatalystX::Starter::_boilerplate();
 ok -e $src, "source of files, $src, exists";

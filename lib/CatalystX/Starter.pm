@@ -58,6 +58,40 @@ sub _split_module {
     return split /::/, $module;
 }
 
+sub _mk_module {
+    my $module = shift;
+    my $dist   = shift;
+    
+    my $d = pushd $dist;
+    mkdir 'lib';
+    die "Failed to create lib in $dist: $!" unless -d 'lib';
+
+    chdir 'lib';
+    my @path = _split_module($module);
+    my $file = pop @path;
+    foreach my $part (@path) {
+        mkdir $part;
+        die "Failed to mkdir $part: $!" if !-d $part;
+        chdir $part;
+    }
+    
+    write_file("$file.pm",<<"MOD");
+package $module;
+use strict;
+use warnings;
+
+=head1 NAME
+
+$module - 
+
+=cut
+
+1;
+MOD
+    return;
+}
+
+
 1;
 
 __END__

@@ -21,4 +21,6 @@ build_requires 'Test::Exception';
 install_script('bin/catalystx-starter');
 install_share('data');
 
+no_index directory => 'data';
+
 WriteAll();

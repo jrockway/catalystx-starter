@@ -5,6 +5,9 @@ use strict;
 use warnings;
 
 use File::ShareDir 'dist_dir';
+use File::Copy::Recursive qw/dircopy/;
+
+# don't use any of these subroutines.
 
 sub _boilerplate {
     return dist_dir('CatalystX-Starter');
@@ -16,12 +19,11 @@ sub _module2dist {
     return $module;
 }
 
-sub _make_destination {
-    my $module = shift;
-    my $dist = _module2dist($module);
-    mkdir $dist or die "Failed to create dist directory '$dist': $!";
+sub _copy_files {
+    my $dest = shift;
+    my $src  = _boilerplate();
+    dircopy($src, $dest) or die "Failed to install boilerplate: $!";
 }
-
 
 1;
 

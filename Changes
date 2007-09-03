@@ -1,6 +1,11 @@
 
+0.03    AGAIN ON THE SAME DAY
+        - indent generated POD so that search.cpan doesn't get confused
+        - no functional changes
+
 0.02    same day as 0.01!
         - add no_index to the data dir, so PAUSE accepts the upload
+        - no functional changes
 
 0.01    Mon Sep  3 CDT 2007
         - first release, world that doesn't suspect it, blah blah blah

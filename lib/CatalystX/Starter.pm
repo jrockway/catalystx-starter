@@ -4,7 +4,7 @@ package CatalystX::Starter;
 use strict;
 use warnings;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 use File::ShareDir qw/module_dir/;
 use File::Copy::Recursive qw/dircopy/;
@@ -77,19 +77,22 @@ sub _mk_module {
         chdir $part;
     }
     
-    write_file("$file.pm",<<"MOD");
-package $module;
-use strict;
-use warnings;
-
-=head1 NAME
-
-$module - 
-
-=cut
-
-1;
+    my $data = <<"MOD"; # indented to prevent pod parser from parsing it
+ package $module;
+ use strict;
+ use warnings;
+ 
+ =head1 NAME
+ 
+ $module - 
+ 
+ =cut
+ 
+ 1;
 MOD
+    
+    $data =~ s/^ //mg; # cleanup the leading space
+    write_file("$file.pm",$data);
     return;
 }
 

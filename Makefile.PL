@@ -18,6 +18,7 @@ build_requires 'Directory::Scratch';
 build_requires 'Test::TableDriven';
 build_requires 'Test::Exception';
 
+install_script('bin/catalystx-starter');
 install_share('data');
 
 WriteAll();

@@ -91,6 +91,14 @@ MOD
     return;
 }
 
+sub _go {
+    my $module = shift;
+    my $dist   = _module2dist;
+    _copy_files($dist);
+    _fix_files($module, $dist);
+    _mk_module($module, $dist);
+    return $dist;
+}
 
 1;
 

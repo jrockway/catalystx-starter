@@ -9,8 +9,8 @@ name($dist);
 my @path = split '::', $module;
 all_from('lib/'. (join '/',@path). '.pm');
 
-
 build_requires 'Catalyst::Runtime';
+build_requires 'Test::WWW::Mechanize::Catalyst';
 build_requires 'Test::More';
 build_requires 'ok';
 

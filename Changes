@@ -1,4 +1,7 @@
 
+0.04    Tue Sep  4 04:44:40 CDT 2007
+        - add T::W::M::C to the generated prereqs
+
 0.03    AGAIN ON THE SAME DAY
         - indent generated POD so that search.cpan doesn't get confused
         - no functional changes

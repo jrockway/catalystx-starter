@@ -4,7 +4,7 @@ package CatalystX::Starter;
 use strict;
 use warnings;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 use File::ShareDir qw/module_dir/;
 use File::Copy::Recursive qw/dircopy/;

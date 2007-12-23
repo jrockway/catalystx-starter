@@ -1,13 +1,7 @@
 use inc::Module::Install;
 
-my $module = '[% __YOUR_MODULE__ %]';
-
-my $dist   = $module;
-$dist =~ s/::/-/g;
-name($dist);
-
-my @path = split '::', $module;
-all_from('lib/'. (join '/',@path). '.pm');
+name '[% DIST_NAME %]';
+all_from '[% MAIN_MODULE_PATH %]';
 
 build_requires 'Catalyst::Runtime';
 build_requires 'Test::WWW::Mechanize::Catalyst';

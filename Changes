@@ -1,3 +1,5 @@
+0.05    Sun Dec 23 02:22:00 CST 2007
+        - cleanup the generated Makefile.PL
 
 0.04    Tue Sep  4 04:44:40 CDT 2007
         - add T::W::M::C to the generated prereqs

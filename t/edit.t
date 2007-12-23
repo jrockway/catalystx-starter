@@ -3,7 +3,7 @@
 
 use strict;
 use warnings;
-use Test::More tests => 8;
+use Test::More tests => 9;
 
 use CatalystX::Starter;
 use Directory::Scratch;
@@ -21,12 +21,13 @@ ok $tmp->exists($mk), 'Makefile.PL exists';
 
 my $mkfile = $tmp->read($mk);
 unlike $mkfile, qr/My::Module/, 'no My::Module yet';
-like $mkfile, qr/\[% __YOUR_MODULE__ %\]/, 'makefile has placeholder';
+like $mkfile, qr/\[% \w+ %\]/, 'makefile has placeholder';
 
 lives_ok {
     CatalystX::Starter::_fix_files('My::Module', $tmp->exists('My-Module'));
 } 'files fixed without dying';
 
 $mkfile = $tmp->read($mk);
-like $mkfile, qr/My::Module/, 'My::Module is in there';
-unlike $mkfile, qr/\[% __YOUR_MODULE__ %\]/, 'makefile has no placeholders';
+like $mkfile, qr/My-Module/, 'My-Module is in there';
+like $mkfile, qr{lib/My/Module.pm}, 'path to My/Module.pm is in there';
+unlike $mkfile, qr/\[% \w+ %\]/, 'makefile has no placeholders';

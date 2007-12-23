@@ -35,19 +35,27 @@ sub _fix_files {
     opendir my $dh, $dir or die "Failed to opendir $dir: $!";
     my @paths = grep {!/^[.][.]?$/} readdir $dh 
       or die "Failed to read $dir: $!";
-    
+
     my $p = pushd $dir;
     my @dirs  = grep { -d  } @paths;
     my @files = grep { !-d } @paths;
 
     # fix files
-    foreach my $file (@files) {
-        my $data = read_file($file);
-        chmod 0644, $file;
-        $data =~ s/\[% __YOUR_MODULE__ %\]/$module/g;
-        write_file($file, $data);
+    {
+        my $dist_name = $module;
+        my $main_module_path = "lib/$module.pm";
+        $dist_name =~ s/::/-/g;
+        $main_module_path =~ s|::|/|g;
+
+        foreach my $file (@files) {
+            my $data = read_file($file);
+            chmod 0644, $file;
+            $data =~ s/\[% DIST_NAME %\]/$dist_name/g;
+            $data =~ s/\[% MODULE %\]/$module/g;
+            $data =~ s/\[% MAIN_MODULE_PATH %\]/$main_module_path/g;
+            write_file($file, $data);
+        }
     }
-    
     # fix subdirs
     _fix_files($module, $_) for @dirs;
     closedir $dh;
